@@ -1,6 +1,8 @@
 <div class="blog-card">
     <div class="blog-card-content">
-        <h2 class="blog-card-content-header">{{ book.title }}</h2>
+        <a href="{{ path('app.books.show', {id: book.id}) }}">
+            <h2 class="blog-card-content-header">{{ book.title }}</h2>
+        </a>
         <p class="blog-cart-content-date">
             <i class="bi bi-calendar2-week-fill"></i>
             Date de publication :

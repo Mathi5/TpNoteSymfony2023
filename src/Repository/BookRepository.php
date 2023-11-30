@@ -45,4 +45,12 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findLatestWithLimit(int $int)
+    {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.id', 'DESC')
+            ->setMaxResults($int)
+            ->getQuery()
+            ->getResult();
+    }
 }

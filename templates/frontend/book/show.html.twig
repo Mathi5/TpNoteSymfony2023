@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ book.title }} | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="container mt-4">
+        <div class="row">
+            <aside class="col-md-4">
+                <h2>
+                    {{  book.title }}
+                </h2>
+                <p>
+                    <strong>Date:</strong>
+                    {{  book.publishedDate | format_datetime('full', 'short', locale='fr') }}
+                </p>
+                <p>
+                    <strong>Author:</strong>
+                    {{ book.author.fullName }}
+                </p>
+                {% if book.category | length > 0 %}
+                    {% for category in book.category %}
+                        <span class="badge" style="background-color: {{ category.color }}"><i class="bi bi-bookmark-fill"></i> {{ category.title }}</span>
+                    {% endfor %}
+                {% endif %}
+            </aside>
+{#            <article class="col-md-8">#}
+{#                {{ article.content | raw}}#}
+{#            </article>#}
+        </div>
+    </section>
+{% endblock %}
+
+

@@ -1,5 +1,5 @@
-<form action="{{ path('admin.categories.delete', {id: author.id}) }}" method="post"
-      onsubmit="return confirm('Ête-vous sur de vouloir supprimer cette categorie ?')">
+<form action="{{ path('admin.authors.delete', {id: author.id}) }}" method="post"
+      onsubmit="return confirm('Ête-vous sur de vouloir supprimer l\'auteur ? Cela vas supprimer tout les livres associées !!!')">
     <input type="hidden" name="token" value="{{ csrf_token('delete' ~ author.id) }}">
     <button type="submit" class="btn btn-danger text-light">Supprimer</button>
 </form>
