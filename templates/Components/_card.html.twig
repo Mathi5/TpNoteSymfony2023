@@ -1,0 +1,17 @@
+<div class="blog-card">
+    <div class="blog-card-content">
+        <h2 class="blog-card-content-header">{{ book.title }}</h2>
+        <p class="blog-cart-content-date">
+            <i class="bi bi-calendar2-week-fill"></i>
+            Date de publication :
+            {{ book.publishedDate | format_datetime('full', 'short', locale='fr') }}
+        </p>
+        <p class="blog-card-content-user text-muted">Auteur : {{ book.author.fullName }}</p>
+        {% if app.request.get('_route') == 'admin.books.index' %}
+           <div class="d-flex justify-content-between align-items-center">
+               <a href="{{ path('admin.books.update', {'id': book.id}) }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Modifer</a>
+               {% include 'backend/book/_deleteForm.html.twig' %}
+           </div>
+        {% endif %}
+    </div>
+</div>

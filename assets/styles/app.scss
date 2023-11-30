@@ -1,4 +1,6 @@
 @import "variables";
+@import "mixins";
 @import "~bootstrap/scss/bootstrap";
 @import "structure";
-//@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "Books/card.scss";
