@@ -1,7 +1,7 @@
 <header class="sticky-top">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
         <div class="container-fluid">
-{#            <a class="navbar-brand" href="{{ path('Frontend.homepage') }}">My first Symfo App</a>#}
+            <a class="navbar-brand" href="{{ path('app.books.index') }}">Gestionnaire de livres</a>
             <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav me-auto mt-2 mt-lg-0">
@@ -12,11 +12,11 @@
 {#                        <a class="nav-link" href="{{ path('app.books.index') }}">Livres</a>#}
                     </li>
                 </ul>
-                <div class="navbar-btn me-0 d-flex gap-3">
+                <div class="navbar-btn me-0 d-flex gap-2 r-4">
                     <div class="dropdown open">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
-                            Admin
+                            Gestion des données
                         </button>
                         <div class="dropdown-menu" aria-labelledby="triggerId">
                             <a class="dropdown-item" href="{{ path('admin.books.index') }}"><i class="bi bi-file-text-fill"></i> Livres</a>

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     public function __construct(
-        private CategoryRepository $categorieRepository,
+        private CategoryRepository $categoryRepository,
         private EntityManagerInterface $entityManager
     )
     {
@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
     public function index(): Response
     {
         return $this->render('backend/category/index.html.twig', [
-            'categories' => $this->categorieRepository->findAll(),
+            'categories' => $this->categoryRepository->findAll(),
         ]);
     }
 
@@ -50,75 +50,52 @@ class CategoryController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
+    public function update(?Category $category, Request $request): Response|RedirectResponse
+    {
+        if (!$category instanceof Category) {
+            $this->addFlash('danger', 'La catégorie n\'existe pas');
+            return $this->redirectToRoute('admin.categories.index');
+        }
+
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'La catégorie a bien été modifié');
+
+            return $this->redirectToRoute('admin.categories.index');
+        }
+
+        return $this->render('backend/category/update.html.twig', [
+            'form' => $form,
+            'category' => $category
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
+    public function delete(?Category $category, Request $request) : RedirectResponse
+    {
+        if (!$category instanceof Category) {
+            $this->addFlash('danger', 'La categorie n\'existe pas');
+            return $this->redirectToRoute('admin.categories.index');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('token'))) {
+            $this->entityManager->remove($category);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'La categorie a bien été supprimé');
+
+            return $this->redirectToRoute('admin.categories.index');
+        }
+
+        $this->addFlash('danger', 'Le token est invalide');
+        return $this->redirectToRoute('admin.categories.index');
+    }
+
 }
 
-
-//
-//
-//    #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
-//    public function update(?Categorie $categorie, Request $request): Response|RedirectResponse
-//    {
-//        if (!$categorie instanceof Categorie) {
-//            $this->addFlash('danger', 'La catégorie n\'existe pas');
-//            return $this->redirectToRoute('admin.categories.index');
-//        }
-//
-//        $form = $this->createForm(CategorieType::class, $categorie);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $this->entityManager->persist($categorie);
-//            $this->entityManager->flush();
-//
-//            $this->addFlash('success', 'La catégorie a bien été modifié');
-//
-//            return $this->redirectToRoute('admin.categories.index');
-//        }
-//
-//        return $this->render('backend/categorie/update.html.twig', [
-//            'form' => $form,
-//            'categorie' => $categorie
-//        ]);
-//    }
-//
-//    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
-//    public function delete(?Categorie $categorie, Request $request) : RedirectResponse
-//    {
-//        if (!$categorie instanceof Categorie) {
-//            $this->addFlash('danger', 'L\'categorie n\'existe pas');
-//            return $this->redirectToRoute('admin.categories.index');
-//        }
-//
-//        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('token'))) {
-//            $this->entityManager->remove($categorie);
-//            $this->entityManager->flush();
-//            $this->addFlash('success', 'L\'categorie a bien été supprimé');
-//
-//            return $this->redirectToRoute('admin.categories.index');
-//        }
-//
-//        $this->addFlash('danger', 'Le token est invalide');
-//        return $this->redirectToRoute('admin.categories.index');
-//    }
-//
-//    #[Route('/{id}/visibility', name: '.switch', methods: ['GET'])]
-//    public function switch(?Categorie $categorie): JsonResponse
-//    {
-//        if (!$categorie instanceof Categorie) {
-//            return new JsonResponse([
-//                'status' => 'Error',
-//                'message' => 'La catégorie n\'existe pas'
-//            ], Response::HTTP_NOT_FOUND);
-//        }
-//
-//        $categorie->setEnable(!$categorie->isEnable());
-//        $this->entityManager->persist($categorie);
-//        $this->entityManager->flush();
-//
-//        return $this->json([
-//            'status' => 'success',
-//            'message' => 'La catégorie a bien été modifié',
-//            'visibility' => $categorie->isEnable()
-//        ]);
-//    }
-//}

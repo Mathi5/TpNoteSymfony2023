@@ -32,6 +32,9 @@ class Category
     #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'category')]
     private Collection $books;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $color = null;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
@@ -89,6 +92,18 @@ class Category
         if ($this->books->removeElement($book)) {
             $book->removeCategory($this);
         }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }

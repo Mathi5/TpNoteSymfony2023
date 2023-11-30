@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +17,12 @@ class CategoryType extends AbstractType
         $builder
             ->add('title')
             ->add('enable')
+            ->add('color', ColorType::class, [
+                'label' => 'Couleur',
+                'attr' => [
+                    'placeholder' => 'Choisissez une couleur'
+                ]
+            ])
         ;
     }
 

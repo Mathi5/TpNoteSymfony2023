@@ -50,4 +50,50 @@ class AuthorController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
+    public function update(?Author $author, Request $request): Response|RedirectResponse
+    {
+        if (!$author instanceof Author) {
+            $this->addFlash('danger', 'L\'Auteur n\'existe pas');
+            return $this->redirectToRoute('admin.authors.index');
+        }
+
+        $form = $this->createForm(AuthorType::class, $author);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($author);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'L\'Auteur a bien été modifié');
+
+            return $this->redirectToRoute('admin.authors.index');
+        }
+
+        return $this->render('backend/author/update.html.twig', [
+            'form' => $form,
+            'author' => $author
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
+    public function delete(?Author $author, Request $request) : RedirectResponse
+    {
+        if (!$author instanceof Author) {
+            $this->addFlash('danger', 'L\'Auteur n\'existe pas');
+            return $this->redirectToRoute('admin.authors.index');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $author->getId(), $request->request->get('token'))) {
+            $this->entityManager->remove($author);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'L\'Auteur a bien été supprimé');
+
+            return $this->redirectToRoute('admin.authors.index');
+        }
+
+        $this->addFlash('danger', 'Le token est invalide');
+        return $this->redirectToRoute('admin.authors.index');
+    }
 }
