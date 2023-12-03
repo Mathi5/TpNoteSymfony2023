@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[UniqueEntity(fields: 'title', message: 'Ce titre existe déjà')]
 class Book
 {
     #[ORM\Id]
@@ -44,6 +47,10 @@ class Book
         minMessage: 'Le résumé doit faire au moins {{ limit }} caractères',
     )]
     private ?string $summary = null;
+
+    #[ORM\Column(length: 255)]
+    #[Slug(fields: ['title'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -125,5 +132,10 @@ class Book
         $this->summary = $summary;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 }

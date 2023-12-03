@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity(fields: 'title', message: 'Ce titre existe déjà')]
 class Category
 {
     #[ORM\Id]
@@ -34,6 +37,10 @@ class Category
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $color = null;
+
+    #[ORM\Column(length: 255)]
+    #[Slug(fields: ['title'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -106,5 +113,10 @@ class Category
         $this->color = $color;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 }

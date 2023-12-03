@@ -26,7 +26,7 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/details/{id}', name: '.show', methods: ['GET'])]
+    #[Route('/details/{slug}', name: '.show', methods: ['GET'])]
     public function show(?Book $book) : Response
     {
         if (!$book instanceof Book) {
@@ -39,7 +39,7 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/sameCategory/{id}', name: '.show.same-category', methods: ['GET'])]
+    #[Route('/sameCategory/{slug}', name: '.show.same-category', methods: ['GET'])]
     public function showSameCategory(?Category $category) : Response
     {
         if (!$category instanceof Category) {
