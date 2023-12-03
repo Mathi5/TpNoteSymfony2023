@@ -22,7 +22,7 @@ class Category
 
     #[ORM\Column(length: 100)]
     #[Assert\Length(
-        min: 3, max: 100,
+        min: 2, max: 100,
         minMessage: 'Le titre doit faire au moins {{ limit }} caractères',
         maxMessage: 'Le titre ne doit pas faire plus de {{ limit }} caractères'
     )]
