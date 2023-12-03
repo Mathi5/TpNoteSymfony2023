@@ -38,6 +38,13 @@ class Book
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'books')]
     private Collection $category;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(
+        min: 10,
+        minMessage: 'Le résumé doit faire au moins {{ limit }} caractères',
+    )]
+    private ?string $summary = null;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -104,6 +111,18 @@ class Book
     public function removeCategory(Category $category): static
     {
         $this->category->removeElement($category);
+
+        return $this;
+    }
+
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(?string $summary): static
+    {
+        $this->summary = $summary;
 
         return $this;
     }

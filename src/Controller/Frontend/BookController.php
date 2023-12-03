@@ -3,6 +3,7 @@
 namespace App\Controller\Frontend;
 
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('details/{id}', name: '.show', methods: ['GET'])]
+    #[Route('/details/{id}', name: '.show', methods: ['GET'])]
     public function show(?Book $book) : Response
     {
         if (!$book instanceof Book) {
@@ -35,6 +36,22 @@ class BookController extends AbstractController
         }
         return $this->render('frontend/book/show.html.twig', [
             'book' => $book
+        ]);
+    }
+
+    #[Route('/sameCategory/{id}', name: '.show.same-category', methods: ['GET'])]
+    public function showSameCategory(?Category $category) : Response
+    {
+        if (!$category instanceof Category) {
+            $this->addFlash('error', 'Cette catégorie n\'existe pas');
+
+            return $this->redirectToRoute('app.books.index');
+        }
+
+        $books = $this->bookRepository->findAllByCategory($category->getId());
+        return $this->render('frontend/book/show_same_category.html.twig', [
+            'books' => $books,
+            'category' => $category
         ]);
     }
 }

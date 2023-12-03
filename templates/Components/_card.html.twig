@@ -23,7 +23,9 @@
                     {{ category.title }}
                 </a>
             {% else %}
-                <p class="badge" style="background-color: {{ category.color }}">{{ category.title }}</p>
+                <a href="{{ path('app.books.show.same-category', {'id': category.id}) }}" class="badge" style="background-color: {{ category.color }}">
+                    {{ category.title }}
+                </a>
             {% endif %}
         {% endfor %}
 

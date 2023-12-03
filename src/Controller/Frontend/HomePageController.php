@@ -17,7 +17,7 @@ class HomePageController extends AbstractController
     public function index(): Response
     {
         return $this->render('frontend/home_page/index.html.twig', [
-            'books' => $this->bookRepository->findLatestWithLimit(6)
+            'books' => $this->bookRepository->findLatestWithLimit(3)
         ]);
     }
 }

@@ -13,7 +13,7 @@
                 </h2>
                 <p>
                     <strong>Date:</strong>
-                    {{  book.publishedDate | format_datetime('full', 'short', locale='fr') }}
+                    {{  book.publishedDate | format_datetime('full', 'none', locale='fr') }}
                 </p>
                 <p>
                     <strong>Author:</strong>
@@ -25,9 +25,11 @@
                     {% endfor %}
                 {% endif %}
             </aside>
-{#            <article class="col-md-8">#}
-{#                {{ article.content | raw}}#}
-{#            </article>#}
+            {% if book.summary %}
+                <article class="col-md-8">
+                    {{ book.summary | raw}}
+                </article>
+            {% endif %}
         </div>
     </section>
 {% endblock %}
